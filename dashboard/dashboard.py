@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
 
-rent_daily = pd.read_csv('dashboard\df_daily_cleaned.csv')
-rent_hour = pd.read_csv('dashboard\df_hour_cleaned.csv')
+rent_daily = pd.read_csv('dashboard/df_daily_cleaned.csv')
+rent_hour = pd.read_csv('dashboard/df_hour_cleaned.csv')
 
 rent_daily = rent_daily.rename(columns={
     'instant' : 'Record_id', 
