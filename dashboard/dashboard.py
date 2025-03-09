@@ -97,11 +97,6 @@ with tab1:
         - How Many Users Uses Bike Rentals on Weekdays Compared to Weekends?
         - How Many Users Use Bike Rentals Services in 12 Months Based on User Type Category?"""
     )
-    st.markdown('Table Bike Rentals System Daily Basis')
-    st.dataframe(filtered_rent_daily)
-    
-    st.markdown('Table Bike Rentals System Hour Basis')
-    st.dataframe(filtered_rent_hour)
     
 
 with tab2:
