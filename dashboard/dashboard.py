@@ -122,22 +122,43 @@ with tab2:
     # Question 1 Vis
     st.subheader('Question 1 : In 24 Hours, When Does the Average User Rent A Bike?')
     hourly_user = filtered_rent_hour.groupby(by='Hour')['user_count'].mean().reset_index()
+    # hourly_user
     st.line_chart(hourly_user, x='Hour', y='user_count', color='#a84832')
     
     # Question 2 Vis
-    st.subheader('Question 2 : Does the Weather Affect when users Rent Bikes?')
-    weatherby_daily = filtered_rent_daily.groupby('Weather')['user_count'].mean().reset_index()
-    weatherby_hour = filtered_rent_hour.groupby('Weather')['user_count'].mean().reset_index()
-    st.bar_chart(weatherby_daily, x='Weather', y='user_count', color='Weather')
-    st.bar_chart(weatherby_hour, x='Weather', y='user_count', color='Weather')
+    st.subheader('Question 2 : How Much Average of Temp & Humid by Season?')
+    #weatherby_daily = filtered_rent_daily.groupby('Weather')['user_count'].mean().reset_index()
+   # weatherby_hour = filtered_rent_hour.groupby('Weather')['user_count'].mean().reset_index()
+    # st.bar_chart(weatherby_daily, x='Weather', y='user_count', color='Weather')
+    # st.bar_chart(weatherby_hour, x='Weather', y='user_count', color='Weather')
+    seasonth = filtered_rent_daily.groupby(by='Season').agg({
+    'Temperature' : 'mean',
+    'Humidity' : 'mean'}).reset_index()
+    seasonth
+    col1, col2= st.columns(2)
+    with col1:
+            st.bar_chart(seasonth, x='Season', y='Temperature', color='#f9ab3c')
+    with col2:
+        st.bar_chart(seasonth, x='Season', y='Humidity', color='#fc272f')
     
     # Question 3 Vis
-    st.subheader('Question 3 : How Many Users Uses Bike Rentals In 12 Months Range?')
+    st.subheader('Question 3 : How Many Casual vs Registered Users Uses Bike Rentals In 12 Months Range?')
     monthly_count_user = filtered_rent_daily.groupby(by='Month').user_count.mean().reset_index()
     st.line_chart(monthly_count_user, x='Month', y='user_count', color='#a84832')
-    seasoncat = filtered_rent_daily.groupby(by='Season').user_count.mean().reset_index()
-    st.bar_chart(seasoncat, x='Season', y='user_count', color='Season')
+    # seasoncat = filtered_rent_daily.groupby(by='Season').user_count.mean().reset_index()
+    # st.bar_chart(seasoncat, x='Season', y='user_count', color='Season')
+    seasonby = filtered_rent_daily.groupby(by='Season').agg({
+    'Casual_users' : 'mean',
+    'Member_users' : 'mean'})
+    seasonby
+    # create stacked bar chart for students DataFrame
+    seasonby.plot(kind='bar', stacked=True, color=['#f9ab3c', '#f31e68'])
 
+    # Add Title and Labels
+    plt.title('Seasonby : Casual vs Registered')
+    plt.xlabel('Season')
+    plt.ylabel('User Count')
+    st.pyplot(plt)
     
     # Question 4 Vis
     st.subheader('Question 4 : How Many Users Uses Bike Rentals on Weekdays Compared to Weekends?')
@@ -147,7 +168,7 @@ with tab2:
     # Question 5 Advanced Analysis
     st.subheader('User Group Clustering : How Many Users Use Bike Rentals Services in 12 Months Based on User Type Category?')
     monthly_category_user = rent_daily.groupby(['Casual_users', 'Member_users']).Month.mean().reset_index()
-    st.bar_chart(monthly_category_user, x='Month', stack=False)
+    st.bar_chart(monthly_category_user, x='Month', stack=False, color=['#f9ab3c',  '#f31e68'])
     
 with tab3:
     st.markdown(
