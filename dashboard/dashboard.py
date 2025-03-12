@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -122,10 +123,6 @@ with tab2:
     
     # Question 2 Vis
     st.subheader('Question 2 : How Much Average of Temp & Humid by Season?')
-    #weatherby_daily = filtered_rent_daily.groupby('Weather')['user_count'].mean().reset_index()
-   # weatherby_hour = filtered_rent_hour.groupby('Weather')['user_count'].mean().reset_index()
-    # st.bar_chart(weatherby_daily, x='Weather', y='user_count', color='Weather')
-    # st.bar_chart(weatherby_hour, x='Weather', y='user_count', color='Weather')
     seasonth = filtered_rent_daily.groupby(by='Season').agg({
     'Temperature' : 'mean',
     'Humidity' : 'mean'}).reset_index()
@@ -137,31 +134,24 @@ with tab2:
         st.bar_chart(seasonth, x='Season', y='Humidity', color='#fc272f')
     
     # Question 3 Vis
-    st.subheader('Question 3 : How Many Casual vs Registered Users Uses Bike Rentals In 12 Months Range?')
-    monthly_count_user = filtered_rent_daily.groupby(by='Month').user_count.mean().reset_index()
-    st.line_chart(monthly_count_user, x='Month', y='user_count', color='#a84832')
-    # seasoncat = filtered_rent_daily.groupby(by='Season').user_count.mean().reset_index()
-    # st.bar_chart(seasoncat, x='Season', y='user_count', color='Season')
-    seasonby = filtered_rent_daily.groupby(by='Season').agg({
-    'Casual_users' : 'mean',
-    'Member_users' : 'mean'})
-    seasonby
-    # create stacked bar chart for students DataFrame
-    seasonby.plot(kind='bar', stacked=True, color=['#f9ab3c', '#f31e68'])
-
-    # Add Title and Labels
-    plt.title('Seasonby : Casual vs Registered')
-    plt.xlabel('Season')
-    plt.ylabel('User Count')
-    st.pyplot(plt)
-    
+    st.subheader('Question 3 : How Many Users Uses Bike Rentals In Season?')
+    seasonby = filtered_rent_daily.groupby(by='Season').user_count.mean()
+    st.write('Seasonby : Users')
+    col1, col2 = st.columns(2)
+    with col1:
+        st.bar_chart(data=seasonby, color='#f31e68')
+    with col2:
+        seasonby
+        
     # Question 4 Vis
     st.subheader('Question 4 : How Many Users Uses Bike Rentals on Weekdays Compared to Weekends?')
     workingby = filtered_rent_daily.groupby(by='Workdays').user_count.mean().reset_index()
-    st.bar_chart(workingby, x='Workdays', y='user_count', color='Workdays')
+    daily_user = rent_daily.groupby(by='Weekdays').user_count.mean().reset_index()
+    st.bar_chart(workingby, x='Workdays', y='user_count', color='#f31e68')
+    st.line_chart(daily_user, x='Weekdays', y='user_count', color='#f31e68')
     
     # Question 5 Advanced Analysis
-    st.subheader('User Group Clustering : How Many Users Use Bike Rentals Services in 12 Months Based on User Type Category?')
+    st.subheader('User Group Clustering : How Many Use Bike Rentals Services in 12 Months Based on User Type Category?')
     monthly_category_user = rent_daily.groupby(['Casual_users', 'Member_users']).Month.mean().reset_index()
     st.bar_chart(monthly_category_user, x='Month', stack=False, color=['#f9ab3c',  '#f31e68'])
     
@@ -169,15 +159,29 @@ with tab3:
     st.markdown(
         """
         ## Conclusion
-- Conclusion Question 1 : Peak Hours happened at 8.am and 5 p.m, which means in everyday users tend to use bike rentals to go to work in the morning (8 a.m) and go back from work (5 p.m) as their main choice of transportation going pass through city traffic.
+        - Conclusion Question 1 : Peak Hours happened at 8.am and 5 p.m, which means in everyday users tend to use bike rentals to go to work in the morning (8 a.m) and go back from work (5 p.m) as their main choice of transportation going pass through city traffic.+ Conclusion Question 1 : 
+    - Peak Hours happened at 8.am and 5 p.m, which means in everyday users tend to use bike rentals to go to work in the morning (8 a.m) and go back from work (5 p.m) as their main choice of transportation going pass through city traffic.
+    - Meanwhile decreasing trend show inactive hour as there no productive activities from 9pm till 5am
 
-- Conclusion Question 2 : Weather does affect users numbers as they would like to use bike rentals during clear/cloudy weather thus having positive impact for total amount of users using bike rentals, vice versa if during heavy raining/snowing people didn't like to use bike rentals.
+    + Conclusion Question 2 : 
+        - The Highest Average Temperature which is on Fall with a value of averaging 28.9 Celcius, meanwhile the Highest Humid is on Winter averaging 66.8%
+        - From this insight, temperature increases, warmer air can hold more water vapor. For example, at 20°C (68°F), air can hold twice as much water vapor as it can at 28°C. If the amount of water vapor in the air stays the same, the relative humidity decreases. Conversely high humidity created more cooler/chilled temperature cause of the amount of low water vapor in air from the low temperature.
 
-- Conclusion Question 3 : Users tend to cycle during fall season, supported by user counts have the highest number bike rentals in fall season.
+    + Conclusion Question 3 : 
+        - Users tend to cycle during fall season, supported by user counts have the highest number bike rentals in fall season.
+        - From earlier question, during fall season has more users than other season, season fall has both relative high average temperature and humidity (temp=28 C, hum=63%) with clear weather, Fall strikes a balance: warm enough to avoid cold discomfort but cool enough to prevent heat stress, with minimal rain disruption.
 
-- Conclusion Question 4 : Users chose Bike Rentals as their mode of transportation cycling through city traffic.
+    + Conclusion Question 4 : 
+        - Users tend to chose Bike Rentals as their mode of transportation cycling through city traffic every working day from Monday - Friday and had a peak count of users in Friday.
 
-- Conclusion Question 5 (Advanced) : There's more registered users using the rental system, and both had a peak number between June - September (6th - 9th).
+    + Conclusion Question 5 (Advanced) : 
+        - The number of registered users who use the rental system on weekdays is greater, so they prioritize practical use to avoid traffic jams on weekdays or the distance to the workplace which is close.
+        - Meanwhile, regular users tend to use bicycle rentals for recreational purposes on holidays.
 
-After Exploring the data, this concludes that User Rent bikes as their main choice of transportation to go to work in the morning and go back from work in the evening, additional fact they chose rental bike is clear/cloudy weather as they enjoy the fall season is a great season for riding bikes."""
+    After Exploring the data, this concludes that User Rent bikes as their main choice of transportation to go to work in the morning and go back from work in the evening, additional fact they chose rental bike is clear/cloudy weather as they enjoy the fall season is a great season for riding bikes. (https://transportation.ucla.edu/blog/why-fall-best-season-bike-riding)
+
+    + Recommended act after this analysis is :
+        - Charge premium rates during peak hours on weekdays (around 8am & 9am)
+        - Marketing campaign to casual users with weekend promo discounts and holidays occasions example : valentine couple ride discount, family ride discount, package with recreational parks tickets, etc.
+    """
     )

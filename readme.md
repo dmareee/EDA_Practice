@@ -33,8 +33,27 @@ The implementation of this project goes through a general data analysis cycle fr
 ## Content
 ----
 1. Filtering date range and select multiple weather condition to visualized
-2. Defining Business case
-3. Metrics User Count, Average Temperature, Weather, Average Humid
-4. Visualization to answer each business case
-5. Advanced User Group Clustering to show
-6. Conclusion to whole analysis
+2. Metrics User Count, Average Temperature, Weather, Average Humid
+3. Visualization to answer each business case
+4. Conclusion to whole analysis
+
+# Setting Environment - Anaconda
+'''
+conda create --name main-ds python=3.9
+conda activate main-ds
+pip install -r requirements.txt
+'''
+
+# Setup Environment - Terminal
+'''
+mkdir proyek_analisis_data
+cd proyek_analisis_data
+pipenv install
+pipenv shell
+pip install -r requirements.txt
+'''
+
+# Run Streamlit App
+'''
+streamlit run dashboard\dashboard.py
+'''
