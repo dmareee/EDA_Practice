@@ -48,7 +48,7 @@ rent_hour = rent_hour.rename(columns={
 
 min_date = rent_daily['Date'].min()
 max_date = rent_daily['Date'].max()
-weather = rent_hour['Weather'].unique()
+weather = rent_daily['Weather'].unique()
 
 
 # Filter dataset based on the selected date range and weather conditions
@@ -65,18 +65,18 @@ with st.sidebar:
         max_value=max_date,
         value=[min_date, max_date]
     )
-    filter_weather = st.multiselect(
+    filter_weather = st.radio(
     label='Select Weather',
     options=(weather)
 )
 
 filtered_rent_daily = rent_daily[(rent_daily["Date"] >= str(min_date)) & 
                 (rent_daily["Date"] <= str(max_date)) &
-                (rent_daily['Weather'].isin(filter_weather))]
+                (rent_daily['Weather'] == str(filter_weather))]
 
 filtered_rent_hour = rent_hour[(rent_hour["Date"] >= str(min_date)) & 
                 (rent_hour["Date"] <= str(max_date)) &
-                (rent_hour['Weather'].isin(filter_weather))]
+                (rent_hour['Weather'] == str(filter_weather))]
 
 st.subheader("Dataset : Bike Rentals")
 st.write(
@@ -158,10 +158,10 @@ with tab2:
 with tab3:
     st.markdown(
         """
-        ## Conclusion
-        - Conclusion Question 1 : Peak Hours happened at 8.am and 5 p.m, which means in everyday users tend to use bike rentals to go to work in the morning (8 a.m) and go back from work (5 p.m) as their main choice of transportation going pass through city traffic.+ Conclusion Question 1 : 
-    - Peak Hours happened at 8.am and 5 p.m, which means in everyday users tend to use bike rentals to go to work in the morning (8 a.m) and go back from work (5 p.m) as their main choice of transportation going pass through city traffic.
-    - Meanwhile decreasing trend show inactive hour as there no productive activities from 9pm till 5am
+    ## Conclusion
+    + Conclusion Question 1 : 
+        - Peak Hours happened at 8.am and 5 p.m, which means in everyday users tend to use bike rentals to go to work in the morning (8 a.m) and go back from work (5 p.m) as their main choice of transportation going pass through city traffic.
+        - Meanwhile decreasing trend show inactive hour as there no productive activities from 9pm till 5am
 
     + Conclusion Question 2 : 
         - The Highest Average Temperature which is on Fall with a value of averaging 28.9 Celcius, meanwhile the Highest Humid is on Winter averaging 66.8%
